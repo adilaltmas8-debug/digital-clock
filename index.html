@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Digital Clock</title>
+    <!-- Load Tailwind CSS for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for aesthetic */
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Deep Space background */
+            background: linear-gradient(135deg, #1f0842 0%, #0c021f 100%);
+            color: #ffffff;
+        }
+
+        /* Use a monospace font for a classic digital look */
+        .digital-display {
+            font-family: 'SF Mono', 'Consolas', monospace;
+            text-shadow: 0 0 10px rgba(0, 255, 100, 0.5), 0 0 20px rgba(0, 255, 100, 0.3);
+        }
+
+        /* Blink animation for the colon separator */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .blinking-colon {
+            animation: blink 1s step-end infinite;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 640px) {
+            .clock-digit {
+                font-size: 3.5rem !important; /* Smaller text on mobile */
+            }
+        }
+
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <h1 class="text-4xl font-extrabold text-indigo-300 mb-12">Simple Digital Display</h1>
+
+    <!-- The Digital Clock Container -->
+    <div id="clock" 
+         class="flex items-center justify-center bg-gray-900 border-2 border-green-700 p-6 md:p-12 rounded-2xl shadow-2xl max-w-full transform transition duration-500 hover:scale-[1.02]">
+        
+        <!-- Hours Display -->
+        <span id="hoursDisplay" class="clock-digit text-7xl md:text-9xl font-bold text-green-400 digital-display">00</span>
+        
+        <!-- Colon 1 (Blinking) -->
+        <span class="clock-digit text-7xl md:text-9xl font-bold text-green-600 blinking-colon mx-1 md:mx-4">:</span>
+        
+        <!-- Minutes Display -->
+        <span id="minutesDisplay" class="clock-digit text-7xl md:text-9xl font-bold text-green-400 digital-display">00</span>
+        
+        <!-- Colon 2 (Blinking) -->
+        <span class="clock-digit text-7xl md:text-9xl font-bold text-green-600 blinking-colon mx-1 md:mx-4">:</span>
+        
+        <!-- Seconds Display -->
+        <span id="secondsDisplay" class="clock-digit text-7xl md:text-9xl font-bold text-green-500 digital-display">00</span>
+    </div>
+
+    <script>
+        // IIFE to encapsulate the script logic
+        (function() {
+            // Get the display elements
+            const hoursDisplay = document.getElementById('hoursDisplay');
+            const minutesDisplay = document.getElementById('minutesDisplay');
+            const secondsDisplay = document.getElementById('secondsDisplay');
+
+            /**
+             * Converts a number into a two-digit padded string (e.g., 5 -> "05").
+             * @param {number} num
+             * @returns {string}
+             */
+            function pad(num) {
+                return num.toString().padStart(2, '0');
+            }
+
+            /**
+             * Main function to update the digital clock display every second.
+             */
+            function updateClock() {
+                const now = new Date();
+                const hours = now.getHours();
+                const minutes = now.getMinutes();
+                const seconds = now.getSeconds();
+
+                // Update the text content directly
+                hoursDisplay.textContent = pad(hours);
+                minutesDisplay.textContent = pad(minutes);
+                secondsDisplay.textContent = pad(seconds);
+            }
+
+            // Initial setup: Immediately set the clock and start the interval
+            updateClock();
+            setInterval(updateClock, 1000);
+        })();
+    </script>
+</body>
+</html>
